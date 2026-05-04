@@ -1,0 +1,143 @@
+
+-------------------------------------------------------------------
+Synchronizers:
+----------------------------------------------------------------
+
+concurrency in java:
+program can execute multiple task concurrently
+
+the concurrency utilities are present in java.util.concurrent package
+Synchronizers
+Executors
+Concurrent collection
+The Fork/ join Framework
+-----------------------------------------------------------------
+-The synchronizers are provided by java.util.concurrent package
+-it controls flow of threads, ensuring proper synchronization and collaboration
+-it is supported by Semaphore, CountDownLatch, CyclicBarrier, Exchnager and phaser.
+---------------------------------------------------------------
+About semaphore:
+A Semaphore is a synchronization tool used to limit how many
+threads can use a shared resource at the same time.
+------------------------------------------------------------
+Very Simple Example
+
+Imagine:
+Only 3 parking spaces
+10 cars arrive
+What happens?
+
+First 3 cars enter
+Remaining 7 wait
+When one car leaves, next waiting car enters
+That parking controller = Semaphore
+----------------------------------------------------------------
+In Multithreading Meaning
+
+Suppose:
+Only 5 database connections available
+20 threads want DB access
+Semaphore can allow:
+✅ Only 5 threads enter at once
+⏳ Other threads wait
+When one thread finishes:
+releases permit
+another waiting thread gets chance
+----------------------------------------------------------------
+
+Most Important Difference from Lock
+Lock:
+Usually 1 thread only.
+Semaphore:
+1 or many threads depending on permit
+------------------------------------------------------------------
+| Acquire Side        | Release Side        |
+| ------------------- | ------------------- |
+| semaphore.acquire() | semaphore.release() |
+| lock.lock()         | lock.unlock()       |
+-----------------------------------------------------------------
+
+1. Lock / Unlock Example(Only One Thread Allowed at a Time)
+----------------------------------------------------------------
+2. aquire/ release example
+----------------------------------------------------
+Semaphore in Java — Constructors and Methods
+
+1. Constructors of Semaphore
+A) Basic Constructor
+Semaphore s = new Semaphore(3);
+Meaning:
+Total permits = 3
+Up to 3 threads can enter together
+
+B) Fairness Constructor
+Semaphore s = new Semaphore(3, true);
+Meaning:
+3 permits
+true = fair mode (first waiting thread gets chance first)
+FIFO style.
+
+C) Non-Fair Mode
+Semaphore s = new Semaphore(3, false);
+Default behavior usually non-fair.
+May give permit to any waiting thread.
+Better performance sometimes.
+------------------------------------------------
+2. Important Methods
+----------------------------------------------------
+2. Important Methods
+acquire()
+s.acquire();
+Take 1 permit.
+If no permit available → waits.
+
+acquire(int n)
+s.acquire(2);
+Take 2 permits.
+
+
+release()
+s.release();
+Return 1 permit.
+
+release(int n)
+s.release(2);
+Return 2 permits.
+
+tryAcquire()
+s.tryAcquire();
+Does not wait.
+
+If permit available → true
+Else → false
+tryAcquire(time)
+s.tryAcquire(5, TimeUnit.SECONDS);
+Wait max 5 seconds.
+
+availablePermits()
+s.availablePermits();
+Current free permits count.
+
+hasQueuedThreads()
+s.hasQueuedThreads();
+Checks if threads are waiting.
+
+getQueueLength()
+s.getQueueLength();
+Approx number of waiting threads.
+
+drainPermits()
+s.drainPermits();
+Takes all available permits immediately.
+
+isFair()
+s.isFair();
+Checks fair mode enabled or not.
+----------------------------------
+| Method             | Purpose             |
+| ------------------ | ------------------- |
+| acquire()          | enter               |
+| release()          | exit                |
+| tryAcquire()       | try without waiting |
+| availablePermits() | check free slots    |
+| getQueueLength()   | waiting threads     |

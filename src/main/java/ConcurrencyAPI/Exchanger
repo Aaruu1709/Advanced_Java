@@ -1,0 +1,46 @@
+
+---------------------------------------------------
+Exchanger
+_______________________________________________
+An Exchanger is a synchronization tool in Java used when two threads want to exchange data with each other.
+Both threads meet at a point and swap objects.
+
+Very Simple Example
+
+Two friends meet.
+
+Friend A gives Apple
+Friend B gives Orange
+
+They exchange items.
+
+That meeting point = Exchanger
+
+--------------------------------------
+In Programming Meaning
+
+Two threads run separately.
+
+When ready:
+
+Thread 1 gives its data
+Thread 2 gives its data
+
+Both receive each other’s data.
+-----------------------------
+Constructor
+Exchanger<String> exchanger = new Exchanger<>();
+
+
+Creates exchanger for String data.
+----------------------------------
+Main Method
+exchange()
+String data = exchanger.exchange(myData);
+
+
+Meaning:
+
+Give your data
+Wait for other thread
+Receive other thread’s data

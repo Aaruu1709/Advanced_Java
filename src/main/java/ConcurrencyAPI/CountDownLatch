@@ -1,0 +1,75 @@
+
+-----------------------------------------------------
+CountDownLatch
+---------------------------------------------------
+
+A CountDownLatch is a synchronization tool in Java used when one or more
+ threads need to wait until some other tasks finish.
+ It works with a counter.
+ When counter becomes 0, waiting thread continues.
+ ------------------------------------------------------------
+Imagine you are waiting for 3 friends before leaving.
+
+Friends arrive one by one:
+
+Friend 1 arrives → count becomes 2
+Friend 2 arrives → count becomes 1
+Friend 3 arrives → count becomes 0
+
+Now you can leave.
+
+That waiting system = CountDownLatch
+------------------------------------------------------------------
+Main Use
+Use when:
+One thread must wait until N tasks complete.
+Examples:
+Wait for 3 API calls
+Wait for 5 files to upload
+Wait for 10 worker threads to finish
+Wait for startup services ready
+-----------------------------------------------------------------------
+Constructor
+CountDownLatch latch = new CountDownLatch(3);
+Means:
+Counter starts at 3
+Need 3 completions.
+--------------------------------------------------------------------
+Main Methods (Use of Each)
+1. await()
+latch.await();
+Meaning:
+Wait here until count becomes 0.
+Used by main/waiting thread.
+
+2. countDown()
+latch.countDown();
+Meaning:
+One task finished. Reduce count by 1.
+Used by worker threads.
+
+3. getCount()
+latch.getCount();
+Returns current remaining count.
+
+4. await(time, unit)
+latch.await(5, TimeUnit.SECONDS);
+Wait only max 5 seconds.
+------------------------------------------------
+Real Backend Example
+Dashboard API needs:
+user data
+order data
+payment data
+Run all in parallel.
+Main response waits until all 3 complete.
+Use:
+CountDownLatch(3)
+----------------------------------------------
+Important Rule
+Latch is one-time use.
+Once count reaches 0:
+❌ cannot reset
+
+------------------------------------------------
+CountDownLatch allows threads to wait until a specified number of operations complete.

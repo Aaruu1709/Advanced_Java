@@ -1,0 +1,34 @@
+
+----------------------------------------
+CyclicBarrier
+--------------------------------------------
+A CyclicBarrier is a synchronization tool in Java used when multiple
+threads must wait for each other at a common point before all continue together.
+Why Name “Cyclic”?
+Because it can be reused again and again after threads cross the barrieer
+------------------------------------------------
+In Programming Meaning
+3 threads doing work.
+After finishing Step-1:
+They must all wait.
+When all reach barrier:
+Then Step-2 starts together.
+-------------------------------------------------------
+Most Important Difference
+CountDownLatch
+
+Main thread waits for workers.
+
+CyclicBarrier
+
+Workers wait for each other.
+CyclicBarrier = “Wait for your team, then move together.”
+Best Real Example For You
+
+3 developers deploying code:
+
+Frontend ready
+Backend ready
+Database ready
+
+When all ready → deploy together.

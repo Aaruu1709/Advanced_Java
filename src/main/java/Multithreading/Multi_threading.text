@@ -1,0 +1,332 @@
+-------------------------------------------------------------------
+Multithreading & Concurrency
+-------------------------------------------------------------------
+Thread lifecycle
+Runnable vs Callable
+Synchronization, locks
+volatile keyword
+Executors framework
+CompletableFuture
+Thread safety concepts
+-----------------------------------------------------------------------
+
+1. What is a Thread?
+A thread is the smallest unit of execution inside a process.
+
+Example:
+A Java application = one process
+Inside it, multiple threads can run:
+Main thread
+Worker thread
+GC thread
+Scheduler thread
+So thread allows concurrent( done at the same time) execution.
+-------------------------------------------------------
+2. What is Thread Lifecycle?
+A thread lifecycle means:
+The complete journey of a thread from creation until termination.
+Just like human lifecycle:
+Born->Ready->Running->Waiting->sleeping->Dead
+Similarly Java thread also moves through multiple states during execution.
+--------------------------------------------------------
+3. Why Thread Lifecycle Introduced?
+
+Thread lifecycle exists because operating system + JVM need to manage threads efficiently.
+meanin of efficciently=efficiently means doing a task in a smart way using less time, less memory,
+and less computer power.
+If two programs do the same job:
+Program A takes 10 seconds
+Program B takes 1 second
+Then Program B is more efficient.
+
+Without lifecycle:
+
+JVM wouldn’t know thread status
+CPU scheduler can’t decide who runs next
+Waiting threads waste CPU
+Deadlock/debugging impossible
+Resource cleanup hard
+
+So lifecycle helps in:
+✅ Control Execution
+Know whether thread should run, wait, stop.
+
+✅ CPU Scheduling
+OS decides which runnable thread gets CPU.
+
+✅ Synchronization
+Some threads wait for lock/resource.
+
+✅ Performance
+Sleeping/waiting threads don’t consume CPU.
+
+✅ Debugging
+You can inspect thread state during issue.
+
+Example:
+Why app hanging?
+Thread blocked?
+Deadlock?
+Infinite wait?
+
+Lifecycle state helps identify.
+-----------------------------------------------
+
+5. Java Thread States (Official)
+There are 6 official states:
+
+NEW
+RUNNABLE
+BLOCKED
+WAITING
+TIMED_WAITING
+TERMINATED
+We will cover each deeply next.
+----------------------------------------
+Simple Meaning of Thread Lifecycle
+
+A thread goes through stages like:
+
+New → Thread created
+Runnable → Ready to run
+Running → Doing work
+Waiting / Blocked → Waiting for resource or signal
+Terminated → Finished work
+---------------------------------------------------------
+Why Important for 4+ Year Developer
+1. Fix Performance Issues
+If app is slow, you need to know whether threads are stuck, waiting, or blocked.
+2. Debug Deadlocks / Hanging Apps
+Sometimes two threads wait for each other. Knowing lifecycle helps find the problem.
+3. Build Multithreaded Systems
+Backend systems, APIs, games, banking apps use many threads. Senior developers must manage them correctly.
+4. Resource Management
+Too many threads = high CPU and memory usage. Good developers optimize thread usage.
+Real Example
+If website handles 1000 users:
+Good thread handling = fast response
+Bad thread handling = server crash or freeze
+
+
+One-Line Answer
+Thread lifecycle is important for a 4+ year developer because it helps build high-performance, bug-free,
+scalable applications and solve real production issues.
+-----------------------------------------------------------------------
+
+Java Thread Lifecycle
+-----------------------------------------------------------------------
+
+1. NEW State:
+This is the starting state of every Java thread.
+When you create a thread object but have not started it yet, the thread is in NEW state.
+
+Basic Definition
+Thread t = new Thread();
+At this moment:
+Thread object exists in heap memory
+JVM created a Thread instance
+No OS/native thread started yet
+No CPU scheduling yet
+run() has not executed
+So state = NEW
+System.out.println(t.getState()); // NEW
+
+-----------------------------------------------------------
+Why This State Exists:
+Java separates:
+Thread creation
+Thread execution
+
+That gives control to developer.
+You can:
+configure thread name
+set priority
+set daemon flag
+assign uncaught exception handler
+pass runnable task
+
+before actual execution starts.
+
+Example:
+
+Thread t = new Thread(task);
+t.setName("worker-1");
+t.setPriority(Thread.MAX_PRIORITY);
+t.start();
+
+
+Without NEW state, you’d lose this preparation phase.
+-------------------------------------------------------------
+What actually happens inside JVM
+1. Object is created in memory (heap)
+
+JVM makes a Thread object like any normal object.
+
+Think: a file is created, but not opened yet.
+
+2. Thread details are stored
+
+JVM stores data like:
+
+thread name
+priority
+Runnable task
+thread id info
+status = NEW
+3. No real CPU work yet
+
+At this time:
+
+❌ No separate execution started
+❌ No OS/native thread created (usually)
+❌ run() is not running
+
+It is only a thread blueprint / ready object.
+
+When start() is called
+t.start();
+
+
+Now JVM tells Operating System:
+
+👉 create real native thread
+👉 give it stack memory
+👉 scheduler can run it on CPU
+👉 status becomes RUNNABLE
+
+Then thread starts executing run() method.
+
+Real Life Example
+new Thread(...)
+
+
+= Buying a car and parking it.
+
+start()
+
+
+= Turning key on and driving.
+
+One-Line Answer
+
+new Thread() only creates thread object in memory.
+start() creates actual running thread and begins execution.
+-------------------------------------------------------
+Important Rule: start() Only Once
+
+A thread can move from NEW to RUNNABLE only one time.
+Thread t = new Thread();
+t.start();
+t.start();   // error
+Throws:
+Java Platform, Standard Edition IllegalThreadStateException
+Because lifecycle is one-time execution.
+Thread objects are not reusable workers.
+-----------------------------------------------------------
+Difference: start() vs run()
+-------------------------------------------------------------
+Suppose:
+
+Thread t = new Thread(() -> {
+    System.out.println("Hello");
+});
+
+1. t.start()
+
+When you call:
+
+t.start();
+Actually happens:
+JVM creates a new real thread
+That new thread gets its own stack
+Scheduler decides when to run it
+JVM automatically calls:
+t.run();
+
+
+inside the new thread
+Result:
+Hello runs separately from main thread.
+
+2. t.run()
+
+When you call:
+t.run();
+Actually happens:
+No new thread created
+No scheduler involved
+Just normal method call
+Current thread executes code directly
+Result:
+
+Main thread itself prints Hello
+
+Easy Truth
+
+start() = create new worker, then worker runs run()
+run() = you do the work yourself
+---------------------------------------------------------
+1. What is RUNNABLE?
+After calling:
+t.start();
+the thread usually moves from:
+NEW -> RUNNABLE
+RUNNABLE means:
+The thread is ready to run or already running on CPU.
+Yes — Java combines two concepts:
+
+Ready / eligible for CPU
+Currently executing
+into one state: RUNNABLE
+
+4. Internal Meaning of RUNNABLE
+
+When thread is in RUNNABLE, one of these is true:
+
+Case A: Ready Queue
+
+Thread is waiting for CPU turn.
+
+Case B: Executing
+
+Thread currently running instructions.
+
+Case C: Rescheduled Frequently
+
+Moved in/out CPU by OS scheduler rapidly.
+
+Java hides these details under one state.
+---------------------------------------------------------------
+6. CPU Scheduler Role
+
+The JVM asks OS to run native thread.
+Then OS scheduler decides:
+which thread gets CPU
+for how long
+when context switch happens
+If 10 threads are RUNNABLE and 2 CPU cores:
+only 2 run simultaneously
+others wait ready
+But all may still appear as RUNNABLE.
+
+------------------------------------------------------------------
+9. When Thread Leaves RUNNABLE
+
+A RUNNABLE thread can move to:
+BLOCKED
+Waiting for synchronized lock.
+WAITING
+Calling wait(), join(), park().
+TIMED_WAITING
+Calling sleep(), timed join/wait.
+TERMINATED
+run() completed or uncaught exception.
+------------------------------------------------------------
+Example Transition
+Thread.sleep(5000);
+
+Inside running thread:
+RUNNABLE -> TIMED_WAITING
+Then after 5 sec:
+TIMED_WAITING -> RUNNABLE
+------------------------------------------------------------

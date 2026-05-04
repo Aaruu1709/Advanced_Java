@@ -1,0 +1,91 @@
+Semaphore + Concurrent API
+________________________________________________________________
+-Semaphore is a synchronization mechanism used to
+ limit how many threads/requests can access a resource at the same time.
+
+ Semaphore(5) → only 5 concurrent requests allowed
+ Extra requests wait until a permit is released
+
+ Semaphore sem = new Semaphore(3);
+ Only 3 threads can run at same time.
+ Others wait
+ ----------------------------------------------------------------
+ Where Industry Uses It
+ Real Examples:
+ Payment Gateway Calls
+ Only 10 concurrent payment requests.
+ Email Sending Service
+ Max 20 emails at once.
+ Image Processing API
+ Prevent CPU overload.
+ Database Connection Protection
+ Limit queries to pool size.
+ Microservices
+ Stop traffic spikes crashing service.
+ ------------------------------------------------------------
+ Scenario:
+ 5 students want to use 2 computers in lab.
+ Only 2 students can use computers at once.
+
+ example:
+import java.util.concurrent.Semaphore;
+
+class Student extends Thread{
+
+private Semaphore semaphore;
+private int studentId;
+
+public Student(Semaphore semaphore, int studentId){
+this.semaphore=semaphore;
+this.studentId=studentId;
+}
+
+@override
+public void run(){
+try{
+sout("Student "+studentId + "waiting for computer..");
+semaphore.acquire();//aquire permit
+sout("studnet "+ studentId + "got computer..");
+Thread.sleep(3000);//using computer
+sout("student" + studentId + "finished work");
+}
+catch(Exception e){
+e.printStackTrace();
+}finally{
+semaphore.release();// give permit back
+}
+}
+}
+public class Main{
+psvm{
+Semaphore semaphore=new Semaphore(2);// only 2 computers
+for(int i=1;i<=5;i++){
+new Student(semaphore, i).start();
+}
+}
+}
+------------------------------------------------
+for (int i = 1; i <= 5; i++) {
+    new Student(semaphore, i).start();
+}
+Creates 5 separate threads:
+Student 1 thread
+Student 2 thread
+Student 3 thread
+Student 4 thread
+Student 5 thread
+All run concurrently.
+-----------------------------------------------------------
+Why Same Semaphore Passed?
+new Student(semaphore, i)
+All students share same semaphore object.
+So all compete for same 2 permits.
+If each had separate semaphore:
+new Semaphore(2)
+then no control happens.
+-----------------------------------------------------------
+ExecutorService
+Runnable
+Callable
+ThreadPool
+Because direct thread creation is expensive.

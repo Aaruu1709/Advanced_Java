@@ -1,0 +1,97 @@
+
+
+----------------------------------------------
+ReentrantLock — What Is This?
+A ReentrantLock is an advanced locking mechanism in Java used
+to allow only one thread at a time to access critical code
+
+It is a lock (key) for protecting shared resources.
+If one thread takes the lock:
+✅ it enters protected code
+⏳ other threads wait until lock is released
+------------------------------------------
+Why Name “Reentrant”?
+
+Because same thread can lock it multiple times without deadlocking itself.
+Example:
+Thread A lock once
+Thread A lock again
+Allowed
+But it must unlock same number of times.
+
+----------------------------------------------
+Why It Came?
+
+Because synchronized had limitations.
+Problems with synchronized
+1. No Try Lock
+Cannot easily say:
+Try now, if busy then do something else.
+
+2. No Timeout Waiting
+Cannot easily wait only 5 seconds.
+
+3. No Fairness Control
+Cannot choose FIFO waiting order.
+
+4. No Interruptible Waiting
+Harder to interrupt waiting thread cleanly.
+
+5. Limited Advanced Features
+Need condition variables and richer APIs.
+
+ReentrantLock Solves This
+Provides methods like:
+
+lock()
+unlock()
+tryLock()
+lockInterruptibly()
+newCondition()
+--------------------------------------
+Real Example Why Needed
+
+Suppose payment service wants lock:
+If busy, don’t wait forever
+Try for 2 seconds
+If not available, return retry message
+ReentrantLock supports this.
+------------------------------------------------
+What is Reentrancy?
+
+Reentrancy means:
+A thread that already holds a lock can enter again and acquire the same lock multiple times.
+It does not block itself.
+
+If thread already has room key, it can open same room again.
+No need to wait outside.
+------------------------------------------------------
+Why Needed?
+In real programs:
+One method calls another method
+Both methods use same lock
+If reentrancy not supported:
+❌ Same thread waits on its own lock
+❌ Self-deadlock
+---------------------------------
+Real Life Example
+Manager has office key.
+He enters office.
+Then enters inner cabin using same authority.
+No need permission again.
+
+example:
+methodA() {
+   lock();
+   methodB();
+}
+methodB() {
+   lock();   // same thread again
+}
+Because lock is reentrant:
+✅ Allowed
+----------------------------------------------
+Reentrancy allows the same thread to acquire the same lock multiple times, maintaining a hold count.
+
+Reentrancy prevents self-deadlock in nested synchronized/locked calls.
+-------------------------------------------

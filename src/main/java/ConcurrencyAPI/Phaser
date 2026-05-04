@@ -1,0 +1,77 @@
+
+phaser
+-----------------------------------------------
+A Phaser is a synchronization tool in Java used when multiple
+ threads work in stages (phases) and must wait for each other after each stage.
+
+It is like an advanced version of:
+
+CountDownLatch
+CyclicBarrier
+------------------------------------------------
+Very Simple Example
+3 Students in Competition
+They must complete:
+Registration
+Round 1
+Round 2
+Final Round
+After each round:
+Everyone waits until all finish, then next round starts.
+That system = Phaser
+-----------------------------------------------------
+Why Name Phaser?
+Because work happens in phases / steps.
+Phase 1
+Phase 2
+Phase 3
+---------------------------------------------------
+Constructor
+Basic
+Phaser phaser = new Phaser(3);
+Means:
+3 participating threads.
+----------------------------------------------------
+Main Methods
+
+arriveAndAwaitAdvance()
+phaser.arriveAndAwaitAdvance();
+Meaning:
+I completed current phase
+Wait for others
+Then move next phase together
+
+arrive()
+phaser.arrive();
+I finished phase, not waiting.
+
+register()
+phaser.register();
+Add new participant dynamically.
+
+arriveAndDeregister()
+phaser.arriveAndDeregister();
+Finish and leave phaser.
+
+getPhase()
+phaser.getPhase();
+Current phase number.
+--------------------------------------
+Why Use Phaser?
+
+When work has many rounds.
+
+Examples:
+
+Multi-step batch jobs
+Multiplayer game rounds
+Data processing stages
+Testing pipelines
+------------------------------------------
+| Tool           | Use                               |
+| -------------- | --------------------------------- |
+| CountDownLatch | Wait once                         |
+| CyclicBarrier  | Wait each round fixed threads     |
+| Phaser         | Wait each round + dynamic threads |
+===============================================
+

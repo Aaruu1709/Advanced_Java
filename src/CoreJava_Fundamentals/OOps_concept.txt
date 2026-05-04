@@ -1,0 +1,93 @@
+👉 OOPs is a way of designing software using objects that combine data and behavior together.
+📌 Real-world example
+
+Think of a Car system:
+
+Car → Object
+Properties → color, model, speed
+Behavior → start(), stop(), accelerate()
+
+So instead of writing separate logic everywhere, we group everything into a Car object.
+👉 OOPs is a programming approach where everything is treated as objects combining data and
+ behavior to build modular and reusable software.
+
+-------------------------------------------------------------
+Encapsulation:
+👉 Encapsulation is the concept of wrapping data and methods together
+in a class and restricting direct access to internal state,
+ ensuring data security, validation, and controlled access.
+ ------------------------------------------------------
+ 🧠 Why Encapsulation is used in real projects
+
+ In enterprise applications (banking, e-commerce, microservices):
+
+ We never expose fields directly
+ We expose controlled access using methods
+ We enforce validation rules
+ We protect against invalid state changes
+ --------------------------------------------------
+ 💡 Real-world example (Banking System)
+ ❌ BAD (no encapsulation)
+ class BankAccount {
+     public double balance;
+ }
+
+
+ Problem:
+
+ Anyone can do balance = -999999
+ No validation
+ No control
+ --------------------------------------------------------
+✅ GOOD (Encapsulation)
+class BankAccount {
+    private double balance;
+
+    public BankAccount(double balance) {
+        if (balance < 0) {
+            throw new IllegalArgumentException("Invalid initial balance");
+        }
+        this.balance = balance;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void deposit(double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Invalid deposit amount");
+        }
+        balance += amount;
+    }
+
+    public void withdraw(double amount) {
+        if (amount <= 0 || amount > balance) {
+            throw new IllegalArgumentException("Invalid withdraw amount");
+        }
+        balance -= amount;
+    }
+}
+
+🔥 What this solves in real industry systems
+1. Data integrity
+Balance can never become invalid
+2. Security
+No direct access to internal fields
+3. Validation layer
+All business rules enforced in one place
+4. Maintainability
+If rules change, only methods change—not entire system
+🏢 Where Encapsulation is used in real backend systems
+Spring Boot Service classes
+DTOs (Data Transfer Objects)
+Entity classes (JPA/Hibernate)
+API request/response models
+
+Example:
+
+UserService
+OrderService
+PaymentService
+
+All use encapsulated objects.

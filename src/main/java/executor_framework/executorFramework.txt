@@ -1,0 +1,273 @@
+Executor Framework:
+Executor Framework Java used to manage and run tasks using a pool of threads,
+ instead of manually creating and controlling threads one by one.
+
+ Simple Language:
+
+ Instead of doing this every time:
+
+ create thread
+ start thread
+ manage thread
+ destroy thread
+ You give your task to the Executor Framework,
+  and it handles thread management for you
+
+  Why It Exists
+
+  Manual thread creation causes:
+
+  too many threads
+  memory waste
+  slower performance
+  difficult management
+
+  Executor Framework solves this by using thread pools.
+  --------------------------------------------------------
+  Before Executor Framework (Old Way) We Used Manual Threads
+  That means every time we wanted background work, we created a thread ourselves.
+
+----------------------------------------------------------------------------
+Executor Framework in Java is a high-level concurrency utility used to
+manage and run multiple tasks asynchronously using a pool of reusable threads,
+instead of creating threads manually.
+
+Executor Framework helps execute tasks efficiently by using thread pools and task management.
+----------------------------------------------------
+Why Reusability Matters
+
+Creating threads repeatedly is expensive because:
+
+Memory allocation
+Stack creation
+OS scheduling cost
+Context switching overhead
+
+So Executor uses a thread pool:
+
+5 threads created once
+Reuse same 5 threads for many tasks
+That improves performance.
+---------------------------------------------
+Types of Executor Framework:
+1. Fixed Thread Pool
+Executors.newFixedThreadPool(5);
+Meaning:
+Creates 5 reusable threads.
+If more tasks come → wait in queue.
+Use:
+When you need limited concurrent workers.
+Example:
+API requests, DB tasks.
+Restaurant has 5 chefs only.
+
+
+2. Cached Thread Pool
+Executors.newCachedThreadPool();
+Creates threads as needed.
+Reuses old idle threads.
+Can grow large if too many tasks.
+-Need more workers? Hire instantly.
+-No work? Remove idle workers.
+
+
+3. Single Thread Executor
+Executors.newSingleThreadExecutor();
+Meaning:
+Only 1 thread executes tasks one by one.
+Use:
+Sequential processing, ordered tasks.
+One cashier serving customers one by one.
+
+4. Scheduled Thread Pool
+Executors.newScheduledThreadPool(3);
+Workers run tasks at specific time
+Meaning:
+Runs tasks after delay or periodically.
+Where Used:
+Send email every day
+Cleanup temp files every hour
+Poll server every 10 sec
+Alarm clock workers.
+
+5. Work Stealing Pool (Advanced)
+Executors.newWorkStealingPool();
+Smart workers share each other’s work
+Meaning:
+Uses multiple processors efficiently.
+Use:
+Parallel CPU-heavy tasks.
+If one worker is free, he helps another worker.
+
+| Type                 | Purpose                  |
+| -------------------- | ------------------------ |
+| FixedThreadPool      | Limited reusable threads |
+| CachedThreadPool     | Dynamic threads          |
+| SingleThreadExecutor | One thread sequential    |
+| ScheduledThreadPool  | Delayed / repeated tasks |
+| WorkStealingPool     | CPU parallel work        |
+
+
+Most Used in Industry
+✅ FixedThreadPool
+✅ ScheduledThreadPool
+✅ SingleThreadExecutor (some cases)
+============================================================
+Best Learning Path (By Code)
+
+We should learn in this order:
+
+Step 1: Fixed Thread Pool
+
+Understand:
+submit tasks
+reused threads
+limited workers
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+class MyTask implements Runnable{
+private int taskId;
+public myTask(int taskId){
+this.taskId=taskId;
+}
+
+@override
+public void run(){
+sout(
+"Task"+ taskId + "executed by"+ Thread.currentThread().getName()
+);
+
+try{
+Thread.sleep(2000);
+}catch(Exception e)
+}
+}
+}
+
+public class Main{
+psvm{
+ExecutorService executor=Executors.newFixedThreadPool(2);
+for(int i=1;i<=5;i++){
+executor.submit(new MyTask(i));
+}
+executor.shutdown();
+}
+}
+
+
+what happened?
+Executors.newFixedThreadPool(2);
+that means: only 2 worker threads
+So:
+
+Task 1 → Thread 1
+Task 2 → Thread 2
+Task 3 waits
+Task 4 waits
+Task 5 waits
+When thread free:
+Thread reused for next task
+
+Main Concept Proven
+Same threads reused:
+pool-1-thread-1
+pool-1-thread-2
+No new thread for every task.
+That is Executor Framework power.
+
+
+create pool:
+ExecutorService executor =
+Executors.newFixedThreadPool(2);
+
+submit task to queue
+no thread creation
+executor.submit(new MyTask(i));
+
+executor.shutdown();
+No more new tasks accepted.
+Finish existing tasks then close.
+
+
+==============================================================================
+Step 2: Single Thread Executor
+Understand:
+tasks run one by one
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+class MyTask implements Runnable {
+
+    private int id;
+
+    public MyTask(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public void run() {
+
+        System.out.println(
+            "Task " + id +
+            " started by " +
+            Thread.currentThread().getName()
+        );
+
+        try {
+            Thread.sleep(2000);
+        } catch (Exception e) {
+        }
+
+        System.out.println("Task " + id + " completed");
+    }
+}
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        ExecutorService executor =
+                Executors.newSingleThreadExecutor();
+
+        executor.submit(new MyTask(1));
+        executor.submit(new MyTask(2));
+        executor.submit(new MyTask(3));
+
+        executor.shutdown();
+    }
+}
+
+Why Use submit()?
+Because executor handles:
+✅ thread selection
+✅ queueing
+✅ scheduling
+✅ reuse of threads
+✅ async execution
+
+Important Difference
+submit()
+
+Used to submit task to pool.
+
+start()
+
+Used when manually creating thread.
+===================================================================
+
+Step 3: Scheduled Executor
+Understand:
+delayed / repeated task
+
+
+Step 4: Callable + Future
+Understand:
+returning values
+
+
+Step 5: Shutdown / Lifecycle
+Understand:
+proper closing pool

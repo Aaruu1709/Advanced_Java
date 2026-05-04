@@ -1,0 +1,78 @@
+Core Java Fundamentals
+---------------------------------------------------------------
+OOP concepts (deep understanding)
+String handling & immutability
+Wrapper classes & autoboxing
+Java memory model (Heap, Stack, Metaspace)
+Garbage Collection (GC algorithms)
+
+-----------------------------------------------------------------
+Advanced OOP & Design
+-------------------------------------------------------------------
+SOLID principles
+Design patterns (Singleton, Factory, Builder, Strategy, Observer)
+Composition vs inheritance
+Interface vs abstract class (deep use cases)
+
+-------------------------------------------------------------------
+Collections Framework
+-------------------------------------------------------------------
+List, Set, Map internals
+ArrayList vs LinkedList
+HashMap internals (very important)
+ConcurrentHashMap
+Fail-fast vs fail-safe iterators
+
+-------------------------------------------------------------------
+Multithreading & Concurrency
+-------------------------------------------------------------------
+Thread lifecycle
+Runnable vs Callable
+Synchronization, locks
+volatile keyword
+Executors framework
+CompletableFuture
+Thread safety concepts
+
+-------------------------------------------------------------------
+Java 8+ Features
+-------------------------------------------------------------------
+Lambda expressions
+Streams API (very important)
+Functional interfaces
+Optional class
+Method references
+Date & Time API
+
+-------------------------------------------------------------------
+Exception Handling
+-------------------------------------------------------------------
+Checked vs unchecked exceptions
+Custom exceptions
+Best practices
+JVM Internals
+Class loading mechanism
+JVM architecture
+JIT compiler
+Memory management
+
+-------------------------------------------------------------------
+I/O & Serialization
+-------------------------------------------------------------------
+File handling (NIO/NIO.2 basics)
+Serialization & deserialization
+
+-------------------------------------------------------------------
+JDBC Basics
+-------------------------------------------------------------------
+Connection management
+PreparedStatement vs Statement
+Connection pooling basics
+
+-------------------------------------------------------------------
+Common Advanced Topics
+-------------------------------------------------------------------
+Reflection API
+Annotations (custom annotations)
+Generics (wildcards, bounded types)
+Java 9+ modular system (basics)

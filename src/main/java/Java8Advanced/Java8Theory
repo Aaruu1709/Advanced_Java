@@ -1,0 +1,36 @@
+
+Why Java 8 Came:
+Before Java 8, Java code was often:
+
+lengthy
+repetitive
+more boilerplate
+slower to write
+harder to process collections/data cleanly
+
+Example: simple tasks like sorting, filtering, looping needed many lines of code.
+
+So Java 8 came to make Java:
+shorter to write
+easier to read
+faster for data processing
+modern like newer languages
+better for multi-core processors
+
+Why It Is Important
+Because Java 8 introduced features used
+in almost every modern Java project:
+
+Main Important Features:
+Lambda expressions → short code
+Stream API → filter/map/sort data easily
+Functional interfaces
+Optional → avoid null issues
+New Date/Time API → better than old Date class
+In One Line
+Java 8 came to modernize Java and reduce unnecessary code
+-----------------------------------------------------
+What is Lambda Expression?
+A lambda expression is a short way to write implementation of a method
+Lambda expression was introduced to reduce boilerplate code, replace anonymous inner classes,
+ and support functional programming in Java.

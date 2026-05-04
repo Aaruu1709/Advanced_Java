@@ -1,0 +1,183 @@
+//Yes 👍 Practical Example (Old Problem Solved by Executor Framework)
+//Process 5 Orders
+//
+//Earlier:
+//
+//❌ Created 5 new threads manually
+//
+//Now:
+//
+//✅ Use Thread Pool via Executor Framework
+//
+//Practical Code (Modern Way)
+================================================================
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+
+        for (int i = 1; i <= 5; i++) {
+
+            int orderId = i;
+
+            executor.submit(() -> {
+                System.out.println(
+                    "Processing Order " + orderId +
+                    " by " + Thread.currentThread().getName()
+                );
+
+                try {
+                    Thread.sleep(2000);
+                } catch (Exception e) {
+                }
+
+                System.out.println("Completed Order " + orderId);
+            });
+        }
+
+        executor.shutdown();
+    }
+}
+-----------------------------------------------------------
+What Happens Here?
+We Created Pool of Only 2 Threads
+Executors.newFixedThreadPool(2)
+
+
+Means only:
+
+Thread-1
+Thread-2
+
+will work.
+-------------------------------------------------------
+
+Important Point
+
+Even though 5 tasks came:
+
+❌ 5 new threads not created
+
+Only 2 threads reused again and again.
+--------------------------------------------------------
+Which Previous Problems Solved?
+Before:
+
+❌ New thread every task
+❌ Memory waste
+❌ Slow thread creation
+❌ Too many threads
+
+Now:
+
+✅ Reused threads
+✅ Faster
+✅ Controlled thread count
+✅ Better server stability
+------------------------------------------------------
+Real Backend Meaning
+If 100 API requests come:
+Instead of 100 new threads
+Use:
+newFixedThreadPool(10)
+Only 10 threads work continuously.
+---------------------------------------------------------
+Executor Framework solved old problem by reusing limited worker
+threads instead of creating new thread for every task.
+-------------------------------------------------------------
+It gives ready-made static methods to create thread pools:
+We Use Static Methods Like:
+Executors.newFixedThreadPool(5);
+Executors.newCachedThreadPool();
+Executors.newSingleThreadExecutor();
+Executors.newScheduledThreadPool(3);
+So:
+Executors creates executor objects for us.
+-------------------------------------------------------------
+. What is .submit() ?
+Used to send task to thread pool.
+executor.submit(task);
+Meaning:
+👉 "Please execute this task when thread is free."
+-------------------------------------------------------------
+Example
+executor.submit(() -> {
+   System.out.println("Hello");
+});
+--------------------------------------------------------------
+3. What is .shutdown() ?
+Used to stop executor gracefully.
+executor.shutdown();
+Meaning:
+✅ No new tasks accepted
+✅ Already submitted tasks will complete
+✅ Then pool stops
+-----------------------------------------------------------------
+Important
+
+If you don't shutdown:
+
+program may keep running
+threads remain alive
+------------------------------------------------------------------------
+A) execute()
+executor.execute(task);
+Same as submit, but:
+No return value
+Simple fire-and-forget
+Use for Runnable.
+---------------------------------------------------------------
+
+B) submit()
+Future f = executor.submit(task);
+Can return result using Future.
+Better than execute.
+---------------------------------------------------------------
+C) shutdownNow()
+executor.shutdownNow();
+Meaning:
+❌ Try to stop immediately
+❌ Interrupt running tasks
+❌ Pending tasks cancelled
+Use carefully.
+------------------------------------------------------------------
+D) isShutdown()
+executor.isShutdown();
+Checks whether shutdown called.
+Returns:
+true / false
+----------------------------------------------------------------
+E) isTerminated()
+executor.isTerminated();
+Checks whether all tasks finished and executor fully stopped.
+---------------------------------------------------------------
+F) awaitTermination()
+executor.awaitTermination(5, TimeUnit.SECONDS);
+Waits for pool to finish tasks before timeout.
+Useful after shutdown.
+---------------------------------------------------------------
+| Method             | Purpose               |
+| ------------------ | --------------------- |
+| submit()           | Send task             |
+| execute()          | Run task no result    |
+| shutdown()         | Graceful stop         |
+| shutdownNow()      | Immediate stop        |
+| isShutdown()       | Check shutdown called |
+| isTerminated()     | Fully stopped?        |
+| awaitTermination() | Wait to finish        |
+-------------------------------------------------------------
+Executor Framework with Callable + Future (Return Result)
+
+Earlier:
+
+Runnable → does work, no return value
+
+Now:
+
+Callable → does work, returns result
+Future → used to get that result later
